@@ -1,0 +1,1 @@
+console.log 'Here inside main.coffee.'
