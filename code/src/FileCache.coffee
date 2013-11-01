@@ -41,9 +41,16 @@ loadDir = (dir, result = []) ->
 # lookup, and which can be be serialized to file or a data base. 
 class CacheEntry
 
-	constructor: (f) ->
-		@_file = f
-		@_content = readContent(f)
+	constructor: (f, content) ->
+		@_file = if f? then f else ""
+		@_content =
+			if f? and exists(f)
+				readContent(f)
+			else if content?
+				content
+			else
+				""
+
 		# This should probably be done more efficiently.  Maybe even
 		# using a Buffer instead of string so that traversing through
 		# indices and comparisons doesn't produce strings every index
@@ -53,10 +60,11 @@ class CacheEntry
 	file      : () -> @_file
 	lines     : () -> @_lines
 	content   : () -> @_content
-	basename  : () -> path.basename @_file
+	basename  : () -> if @hasFile() then path.basename @_file else ""
 	name      : () ->
 		path.basename(@_file).replace(
 			new RegExp(path.extname(@_file) + "$", "g"), "")
+
 	extension     : () -> path.extname @_file
 	dir           : () -> path.dirname @_file
 	hasContent    : () -> @content()? and @content().trim() isnt ""
@@ -71,15 +79,14 @@ class CacheEntry
 	toJson   : () -> JSON.stringify(@toPlainObject(), null, "  ", "")
 	toString : () -> @toJson()
 	toPlainObject : () ->
-		file       : @file
+		file       : @file()
 		basename   : @basename()
 		name       : @name()
-		content    : @content
+		content    : @content()
 		extension  : @extension()
 		dir        : @dir()
 		hasContent : @hasContent()
 		hasFile    : @hasFile()
-
 
 # Creates an in-memory representation of a directory structure.
 class FileCache 
@@ -127,11 +134,11 @@ class FileCache
 	# an empty array of cache entries, and after calling load this value will
 	# be filled based on teh files and directories it's been configured to
 	# accept.
-	files : () => @entries
-	dir : () => @folder
-	hasDir : () => @folder?
+	files    : () => @entries
+	dir      : () => @folder
+	hasDir   : () => @folder?
 	hasFiles : () => @entries?
-	length : () => @hasFiles() and @files()?.length
+	length   : () => @hasFiles() and @files()?.length
 
 	# toLookup transforms the collection of files in the cache into 
 	# an object lookup that resolves each file name (minus the .sql)
@@ -147,5 +154,5 @@ class FileCache
 
 
 exports?.FileCache = FileCache
-
+exports?.CacheEntry = CacheEntry
 

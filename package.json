@@ -1,0 +1,36 @@
+{
+  "name": "node-searcher",
+  "version": "0.0.0",
+  "description": "Searches over an in memory representation of files found in a set of directories.",
+  "main": "SearcherCLI.js",
+  "dependencies": {
+    "colors": "~0.6.2",
+    "chai": "~1.8.1",
+    "coffee": "~0.0.1",
+    "express": "~3.4.1",
+    "lodash": "~2.2.1",
+    "groc": "~0.6.1",
+    "pg": "~2.7.0",
+    "node-uuid": "~1.4.1",
+    "q": "~0.9.7",
+    "promise.coffee": "~1.0.4"
+  },
+  "devDependencies": {
+    "mocha": "~1.13.0"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/lcaballero/node_searcher.git"
+  },
+  "keywords": [
+    "searching"
+  ],
+  "author": "Lucas Caballero",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/lcaballero/node_searcher/issues"
+  }
+}

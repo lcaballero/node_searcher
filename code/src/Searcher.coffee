@@ -2,20 +2,61 @@ FileCache = require('../src/FileCache').FileCache
 path      = require('path')
 _         = require('lodash')
 
+# A TerminalResultsView formats a SearchResult into a view for the terminal
+# where each hit with line and column is hightlighted in the results.
+class TerminalResultsView
 
-class ResultViewer
+	constructor: (searchResult) ->
+		@search = searchResult
 
+	write:() ->
+
+
+# A ResultsViewConfig controls how the search result will be viewed. For
+# instance, the horizontal view window might be made minimal and set at
+# something like 20 characters, perhaps to hide the display of the search
+# summary which displays elapsed time, and number of hits, etc.
+class ResultsViewConfig
+
+	constructor: () ->
+
+
+# A search result constitutes the list of hits found during a search, but also
+# the meta data for the search and the index(s) over which the search was
+# conducted.
+class SearchResult
+
+	constructor: (re, hits, searchString, indexName, startTime, elapsedTime) ->
+		@re = re
+		@hits = hits
+		@searchString = searchString
+		@indexName = indexName
+		@startTime = startTime
+		@elapsedTime = elapsedTime
+
+# A Hit stores data of a match found during a search.
 class Hit
 
-	constructor: (re, match, line, column) ->
-		@line   = line or 0
-		@column = column or 0
-		@input  = if match? && match.input? then match.input else ""
+	# A hit is constructred with a RegExp that provides the current location
+	# in the searched input and stored in the hit as @index.  @entry provides
+	# access to the underlying content, file, directory, and path so that
+	# display info can direct the user to the location in a dir/file.  The
+	# the @line and @column are determined for the hit prior to constructing
+	# the instance of the Hit.
+	constructor: (re, entry, line = 0, column = 0) ->
+		@line   = line
+		@column = column
+		@entry = entry
+
+		# 
+		@input =
+			if entry? && entry.hasContent? && entry.hasContent()
+				entry.content()
+			else
+				""
 
 		# the re index is directly after the match
 		@index = if re? and re.lastIndex? then re.lastIndex - 1 else -1
-
-class SearchResults
 
 class HitFinder
 
@@ -42,38 +83,39 @@ class HitFinder
 			# Consequently in the case where the line is empty, and the index
 			# is the newline terminating that line then the start will match
 			# the index provided, and so that is the line desired.
-			if line.length is 0 and start is index
-				return i+1
-
-			else if start < index < end
-				return i+1
+			if (line.length is 0 and start is index) or (start < index < end)
+				return {
+					line  : i+1
+					start : start
+					end   : end
+				}
 			else
 				start = end
 
-		return false
+		return {}
 
-	@find: (re, text, lines) ->
+	@find: (searchText, cacheEntry) ->
+		re      = new RegExp(searchText, "mg")
+		text    = cacheEntry.content()
+		lines   = cacheEntry.lines()
+		match   = re.exec(text)
 		results = []
-		match = re.exec(text)
 
 		while (match?)
 			line = @findLine(lines, re.lastIndex - 1)
-			# console.log "line: #{line}"
 			results.push(new Hit(re, match, line))
 			match = re.exec(text)
 
 		results
 
+# A searcher wraps a FileCache over which searches can be performed.
 class Searcher
 
 	constructor: (fc) ->
 		@fc = fc
 
 	search: (text) ->
-		re = new RegExp(text)
-
-		for f in @fc.files()
-			@findHits(new RegExp(text, "m"), f.content(), f.lines())
+		re = new RegExp(text, "mg")
 
 		_(@fc.files())
 			.filter((f) -> re.test(f.content()))
@@ -83,3 +125,4 @@ class Searcher
 exports?.Searcher  = Searcher
 exports?.HitFinder = HitFinder
 exports?.Hit       = Hit
+
