@@ -1,4 +1,4 @@
-Hit        = require('../src/Searcher').Hit
+Hit        = require('../src/Hit').Hit
 CacheEntry = require('../src/FileCache').CacheEntry
 expect     = require("chai").expect
 _          = require("lodash")

@@ -1,4 +1,4 @@
-HitFinder = require('../src/Searcher').HitFinder
+HitFinder = require('../src/HitFinder').HitFinder
 expect  = require("chai").expect
 _       = require("lodash")
 

@@ -1,4 +1,4 @@
-HitFinder = require('../src/Searcher').HitFinder
+HitFinder = require('../src/HitFinder').HitFinder
 CacheEntry = require('../src/FileCache').CacheEntry
 expect    = require("chai").expect
 path      = require("path")
@@ -6,20 +6,9 @@ _         = require("lodash")
 
 
 text = 
-	simple: """
-1
-2
-3
+	simple: "\n1\n2\n3\n\n\nabc\nabc abc\n\n0\n79\n8\n"
 
 
-abc
-abc abc
-
-0
-79
-8
-
-"""
 
 lines = text.simple.split(/\n/)
 
