@@ -1,4 +1,4 @@
-Hit = require './Hit'
+Hit = require('./Hit').Hit
 
 class HitFinder
 
@@ -33,22 +33,18 @@ class HitFinder
         }
       else
         start = end
-
     return {}
 
+
   @find: (searchText, cacheEntry) ->
-    console.log(cacheEntry)
     re      = new RegExp(searchText, "mg")
-    console.log("here")
     text    = cacheEntry.content()
-    console.log("here")
     lines   = cacheEntry.lines()
-    console.log("here")
     match   = re.exec(text)
     results = []
 
     while (match?)
-      line = @findLine(lines, re.lastIndex - 1)
+      line = HitFinder.findLine(lines, re.lastIndex - 1)
       results.push(new Hit(re, match, line))
       match = re.exec(text)
 
