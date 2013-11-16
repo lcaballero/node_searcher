@@ -1,8 +1,7 @@
 fs         = require 'fs'
 _  = require 'lodash'
 
-exports?.FS = {
-
+exports?.FS =
   # Reads the content of the file specified by @f and throws an exception if
   # as per the 'fs' readFileSync function would.  In the case of this
   # function it converts the byte buffer provided by Node into a string.
@@ -42,4 +41,3 @@ exports?.FS = {
       else if @isDirectory(full) and acceptDir(full)
         loadDir(full, result)
     result
-};

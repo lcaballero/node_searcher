@@ -21,9 +21,9 @@ module.exports = class FileCache
   loadEntries: (folder) ->
     new CacheEntry(r) for r in FS.loadDir(
       dir:folder
+      result:[]
       acceptFile:@acceptFile
       acceptDir:@acceptDir)
-
 
   # Causes this FileCache to create CacheEntries from each file found in the
   # target directory and for which the acceptFile func returns true, for
