@@ -21,33 +21,26 @@ module.exports = class CacheEntry
     # since JavaScript doesn't support chars
     @_lines = @_content.replace(/\r/g, "").split(/\n/)
 
-  file      : () -> @_file
-  lines     : () -> @_lines
-  content   : () -> @_content
-  basename  : () -> if @hasFile() then path.basename @_file else ""
-  name      : () ->
+  file      : -> @_file
+  lines     : -> @_lines
+  content   : -> @_content
+  basename  : -> if @hasFile() then path.basename @_file else ""
+  name      : ->
     path.basename(@_file).replace(
       new RegExp(path.extname(@_file) + "$", "g"), "")
 
-  extension     : () -> path.extname @_file
-  dir           : () -> path.dirname @_file
-  hasContent    : () -> @content()? and @content().trim() isnt ""
-  hasFile       : () -> @_file? and @_file.trim() isnt ""
-
-  # The sql() method is intended for use with postgres libraries
-  # for the tim being.
-  sql       : (values) ->
-    text   : @content() or ""
-    values : values
-
-  toJson   : () -> JSON.stringify(@toPlainObject(), null, "  ", "")
-  toString : () -> @toJson()
-  toPlainObject : () ->
-    file       : @file()
-    basename   : @basename()
-    name       : @name()
-    content    : @content()
-    extension  : @extension()
-    dir        : @dir()
-    hasContent : @hasContent()
-    hasFile    : @hasFile()
+  extension     : -> path.extname @_file
+  dir           : -> path.dirname @_file
+  hasContent    : -> @content()? and @content().trim() isnt ""
+  hasFile       : -> @_file? and @_file.trim() isnt ""
+  toJson        : -> JSON.stringify(@toPlainObject(), null, "  ", "")
+  toString      : -> @toJson()
+  toPlainObject : ->
+    file        : @file()
+    basename    : @basename()
+    name        : @name()
+    content     : @content()
+    extension   : @extension()
+    dir         : @dir()
+    hasContent  : @hasContent()
+    hasFile     : @hasFile()

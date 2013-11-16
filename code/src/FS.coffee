@@ -1,4 +1,5 @@
 fs         = require 'fs'
+_  = require 'lodash'
 
 exports?.FS = {
 
@@ -24,14 +25,21 @@ exports?.FS = {
 
   # loadDir traverses the filesystem and produces a list of file names
   # and does so synchronously instead of asynchronously.
-  loadDir: (dir, result = []) ->
+  loadDir: (opts) ->
+    {dir, result, acceptFile, acceptDir} =
+      _.merge({
+        result: []
+        acceptFile: -> true
+        acceptDir: -> true
+      }, opts)
+
     files = fs.readdirSync(dir)
 
     for f in files
       full = "#{dir}/#{f}"
-      if @isFile(full)
+      if @isFile(full) and acceptFile(full)
         result.push(full)
-      else if @isDirectory(full)
+      else if @isDirectory(full) and acceptDir(full)
         loadDir(full, result)
     result
 };

@@ -2,7 +2,7 @@ Hit = require('./Hit')
 
 module.exports = class HitFinder
 
-  # Given: ["", "", "abc"] and index 1 should produce line: 2
+  # Given: lines of ["", "", "abc"] and index 1 should produce line: 2
   #
   # 0 => line: '', start: 0, end: 1
   # 1 => line: '', start: 1, end: 2
@@ -27,9 +27,9 @@ module.exports = class HitFinder
       # the index provided, and so that is the line desired.
       if (line.length is 0 and start is index) or (start < index < end)
         return {
-        line  : i+1
-        start : start
-        end   : end
+          line  : i+1
+          start : start
+          end   : end
         }
       else
         start = end
@@ -45,7 +45,7 @@ module.exports = class HitFinder
 
     while (match?)
       line = HitFinder.findLine(lines, re.lastIndex - 1)
-      results.push(new Hit(re, match, line))
+      results.push(new Hit(re, cacheEntry, line))
       match = re.exec(text)
 
     results

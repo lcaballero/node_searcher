@@ -1,64 +1,33 @@
-CacheEntry = require('../src/CacheEntry')
+FileCache = require('../src/FileCache')
+FileFilters = require '../src/FileFilters'
 expect  = require("chai").expect
 _       = require("lodash")
 
 
-describe "Default CacheEntry creation -> ", ->
+describe "FileCache over files/sql-code ", ->
 
-	it "Creating empty CacheEntry doesn't fail -> ", ->
+  it "Creation of FileCache over files/sql-code works fine.", ->
+    fc = new FileCache("files/sql-code/")
+    expect(fc).to.be.ok
 
-		ce = new CacheEntry()
+  it "Should have nothing but .sql files", ->
+    fc = new FileCache("files/sql-code/")
+    files = fc.files()
 
-		expect(ce.file()).to.equal("")
-		expect(ce.content()).to.equal("")
+    expect(files).to.be.ok
+    expect(files.length).gt(0)
+    expect(_.all(files, (f) -> /\.sql$/.test(f.file()))).to.be.true
 
-		# An empty CacheEntry is ['']
-		expect(ce.lines().length).to.equal(1)
-		expect(ce.lines()[0]).to.equal('')
+describe "Creating FileCache with filters", ->
 
-		expect(ce.basename()).to.equal('')
-		expect(ce.name()).to.equal('')
-		expect(ce.extension()).to.equal('')
+  it "(file filter) should continue to have that file filter.", ->
+    accept = FileFilters.acceptExtensions('.js')
+    fc = new FileCache('./files/words-1', accept)
 
-		expect(ce.dir()).to.equal('.')
+    expect(fc.acceptFile).to.ok
 
-		expect(ce.hasContent()).to.be.false
-		expect(ce.hasFile()).to.be.false
+  it "(dir filter) should continue to have that dir filter.", ->
+    accept = FileFilters.acceptExtensions('.js')
+    fc = new FileCache('./files/words-1', null, accept)
 
-	it "'plainObject' should to match defaults -> ", ->
-
-		ce = new CacheEntry()
-		json = ce.toPlainObject()
-
-		expect(json).to.deep.equal(
-			file:''
-			basename:''
-			name:''
-			content:''
-			extension:''
-			dir:'.'
-			hasContent:false
-			hasFile:false)
-
-	it "Checking default version with content but not file.", ->
-
-		content = " heres\n some\n text."
-		ce = new CacheEntry(null, content)
-
-		expect(ce.file()).to.equal("")
-		expect(ce.content()).to.equal(content)
-
-		# An empty CacheEntry is ['']
-		expect(ce.lines().length).to.equal(3)
-		expect(ce.lines()[0]).to.equal(' heres')
-		expect(ce.lines()[1]).to.equal(' some')
-		expect(ce.lines()[2]).to.equal(' text.')
-
-		expect(ce.basename()).to.equal('')
-		expect(ce.name()).to.equal('')
-		expect(ce.extension()).to.equal('')
-		expect(ce.dir()).to.equal('.')
-
-		expect(ce.hasContent()).to.be.true
-		expect(ce.hasFile()).to.be.false
-
+    expect(fc.acceptDir).to.ok
