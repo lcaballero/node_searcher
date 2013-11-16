@@ -1,5 +1,5 @@
 # A Hit stores data of a match found during a search.
-class Hit
+module.exports = class Hit
 
   # A hit is constructred with a RegExp that provides the current location
   # in the searched input and stored in the hit as @index.  @entry provides
@@ -12,7 +12,6 @@ class Hit
     @column = column
     @entry = entry
 
-    #
     @input =
       if entry? && entry.hasContent? && entry.hasContent()
         entry.content()
@@ -21,5 +20,3 @@ class Hit
 
     # the re index is directly after the match
     @index = if re? and re.lastIndex? then re.lastIndex - 1 else -1
-
-exports?.Hit = Hit

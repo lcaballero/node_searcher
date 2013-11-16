@@ -1,6 +1,6 @@
 path       = require 'path'
 _          = require 'lodash'
-CacheEntry = require('./CacheEntry').CacheEntry
+CacheEntry = require('./CacheEntry')
 FS         = require('./FS').FS
 
 
@@ -69,5 +69,5 @@ class FileCache
 		r = _.reduce(@files(), fn, {})
 
 
-exports?.FileCache = FileCache
+module.exports = FileCache
 

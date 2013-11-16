@@ -1,5 +1,5 @@
-Hit        = require('../src/Hit').Hit
-CacheEntry = require('../src/CacheEntry').CacheEntry
+Hit        = require('../src/Hit')
+CacheEntry = require('../src/CacheEntry')
 expect     = require("chai").expect
 _          = require("lodash")
 

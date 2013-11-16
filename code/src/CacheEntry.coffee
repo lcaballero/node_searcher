@@ -3,7 +3,7 @@ path = require('path')
 
 # A CacheEntry is information of a file amoritized for ease of later
 # lookup, and which can be be serialized to file or a data base.
-class CacheEntry
+module.exports = class CacheEntry
 
   constructor: (f, content) ->
     @_file = if f? then f else ""
@@ -51,5 +51,3 @@ class CacheEntry
     dir        : @dir()
     hasContent : @hasContent()
     hasFile    : @hasFile()
-
-exports?.CacheEntry = CacheEntry

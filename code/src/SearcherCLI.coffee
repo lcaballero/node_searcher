@@ -1,7 +1,7 @@
 path      = require 'path'
 readline  = require('readline')
-FileCache = require('../src/FileCache').FileCache
-Searcher  = require('../src/Searcher').Searcher
+FileCache = require('../src/FileCache')
+Searcher  = require('../src/Searcher')
 
 class SearcherCLI
 

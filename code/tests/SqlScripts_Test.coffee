@@ -1,4 +1,4 @@
-FileCache = require('../src/FileCache').FileCache
+FileCache = require('../src/FileCache')
 expect  = require("chai").expect
 path    = require("path")
 _       = require("lodash")

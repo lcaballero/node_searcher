@@ -1,6 +1,6 @@
-Hit = require('./Hit').Hit
+Hit = require('./Hit')
 
-class HitFinder
+module.exports = class HitFinder
 
   # Given: ["", "", "abc"] and index 1 should produce line: 2
   #
@@ -49,5 +49,3 @@ class HitFinder
       match = re.exec(text)
 
     results
-
-exports?.HitFinder  = HitFinder

@@ -1,13 +1,11 @@
-FileCache = require('../src/FileCache').FileCache
+FileCache = require('../src/FileCache')
 path      = require('path')
 _         = require('lodash')
-
-
 
 # A search result constitutes the list of hits found during a search, but also
 # the meta data for the search and the index(s) over which the search was
 # conducted.
-class SearchResult
+module.exports = class SearchResult
 
 	constructor: (re, hits, searchString, indexName, startTime, elapsedTime) ->
 		@re = re
@@ -31,6 +29,3 @@ class Searcher
 			.filter((f) -> re.test(f.content()))
 			.map((entry) -> entry.file())
 			.valueOf()
-
-exports?.Searcher  = Searcher
-
