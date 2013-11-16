@@ -1,3 +1,3 @@
-coffee -c -b -o build/ code/
+coffee -c -o build/ code/
 
 ./node_modules/mocha/bin/mocha --recursive build/tests/

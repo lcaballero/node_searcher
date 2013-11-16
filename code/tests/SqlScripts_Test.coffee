@@ -1,7 +1,8 @@
 FileCache = require('../src/FileCache')
-expect  = require("chai").expect
-path    = require("path")
-_       = require("lodash")
+expect    = require("chai").expect
+path      = require("path")
+_         = require("lodash")
+
 
 describe "Accepting only those files/dirs configured -> ", ->
 	describe "Accpting all -> ", ->
@@ -115,6 +116,3 @@ describe "Scripts Cache -> sql-scripts -> ", ->
 			hasAll = _.all(cache.files(), (f) -> lookup[f.name()]?)
 
 			expect(hasAll).to.be.true
-
-
-
