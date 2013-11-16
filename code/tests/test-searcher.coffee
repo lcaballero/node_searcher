@@ -1,5 +1,5 @@
 HitFinder = require('../src/HitFinder').HitFinder
-CacheEntry = require('../src/FileCache').CacheEntry
+CacheEntry = require('../src/CacheEntry').CacheEntry
 expect    = require("chai").expect
 path      = require("path")
 _         = require("lodash")

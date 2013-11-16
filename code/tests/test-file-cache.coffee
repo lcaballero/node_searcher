@@ -1,4 +1,4 @@
-CacheEntry = require('../src/FileCache').CacheEntry
+CacheEntry = require('../src/CacheEntry').CacheEntry
 expect  = require("chai").expect
 _       = require("lodash")
 
