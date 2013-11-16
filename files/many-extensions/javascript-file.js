@@ -1,1 +1,1 @@
-Just a javascript file.
+//Just a javascript file.
