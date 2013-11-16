@@ -4,17 +4,15 @@ path      = require('path')
 _         = require('lodash')
 
 # A searcher wraps a FileCache over which searches can be performed.
-module.exports =
-class Searcher
+module.exports = class Searcher
 
   constructor: (fc) ->
     @fc = fc
 
   search: (text) ->
 
-    HitFinder.find(text)
-
     _(@fc.files())
-      .filter((f) -> HitFinder.find(text))
-      .map((entry) -> entry.file())
+      .map((f) -> HitFinder.find(text, f))
+      .filter((hits) -> hits.length > 0)
+      .flatten()
       .valueOf()
